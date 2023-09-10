@@ -39,7 +39,7 @@ def upload_file(file_name, bucket, object_name=None):
 
 
 
-def process_data(x_train_key, y_train_key, x_test_key, y_test_key):
+def process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key):
     """
     A function to process mnist data raw files into numpy arrays for training.
 
@@ -51,7 +51,7 @@ def process_data(x_train_key, y_train_key, x_test_key, y_test_key):
     """
     s3.download_file(
         "training-data-sagemaker-tensorflow-mnist",
-        x_train_key,
+        s3_path + x_train_key,
         x_train_key
     )
     logging.info("Dowloaded training images file successfully")
@@ -59,21 +59,21 @@ def process_data(x_train_key, y_train_key, x_test_key, y_test_key):
 
     s3.download_file(
         "training-data-sagemaker-tensorflow-mnist",
-        y_train_key,
+        s3_path + y_train_key,
         y_train_key
     )
     logging.info("Dowloaded training labels file successfully")
 
     s3.download_file(
         "training-data-sagemaker-tensorflow-mnist",
-        x_test_key,
+        s3_path + x_test_key,
         x_test_key
     )
     logging.info("Dowloaded testing images file successfully")
 
     s3.download_file(
         "training-data-sagemaker-tensorflow-mnist",
-        y_test_key,
+        s3_path + y_test_key,
         y_test_key
     )
     logging.info("Dowloaded testing labels file successfully")
@@ -103,8 +103,9 @@ def process_data(x_train_key, y_train_key, x_test_key, y_test_key):
 
 
 if __name__ == "__main__":
-    x_train_key= "processing_input/train-images.idx3-ubyte"
-    y_train_key= "processing_input/train-labels.idx1-ubyte"
-    x_test_key= "processing_input/t10k-images.idx3-ubyte"
-    y_test_key= "processing_input/t10k-labels.idx1-ubyte"
-    process_data(x_train_key, y_train_key, x_test_key, y_test_key)
+    s3_path = "processing_input/"
+    x_train_key= "train-images.idx3-ubyte"
+    y_train_key= "train-labels.idx1-ubyte"
+    x_test_key= "t10k-images.idx3-ubyte"
+    y_test_key= "t10k-labels.idx1-ubyte"
+    process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key)
