@@ -103,8 +103,8 @@ def process_data(x_train_key, y_train_key, x_test_key, y_test_key):
 
 
 if __name__ == "__main__":
-    x_train_key= "train-images.idx3-ubyte"
-    y_train_key= "train-labels.idx1-ubyte"
-    x_test_key= "t10k-images.idx3-ubyte"
-    y_test_key= "t10k-labels.idx1-ubyte"
+    x_train_key= "processing_input/train-images.idx3-ubyte"
+    y_train_key= "processing_input/train-labels.idx1-ubyte"
+    x_test_key= "processing_input/t10k-images.idx3-ubyte"
+    y_test_key= "processing_input/t10k-labels.idx1-ubyte"
     process_data(x_train_key, y_train_key, x_test_key, y_test_key)
