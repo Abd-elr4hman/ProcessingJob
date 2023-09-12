@@ -7,6 +7,9 @@ import logging
 from botocore.exceptions import ClientError
 import os
 
+import argparse
+
+
 s3 = boto3.client("s3")
 
 logging.basicConfig(format='%(asctime)s - %(message)s', level=logging.INFO)
@@ -39,7 +42,7 @@ def upload_file(file_name, bucket, object_name=None):
 
 
 
-def process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key):
+def process_data(input_path, x_train_key, y_train_key, x_test_key, y_test_key):
     """
     A function to process mnist data raw files into numpy arrays for training.
 
@@ -49,36 +52,36 @@ def process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key):
         x_test_key: raw mnist testing images byte file key in s3.
         y_test_key: raw mnist testing labels byte file key in s3.
     """
-    s3.download_file(
-        "training-data-sagemaker-tensorflow-mnist",
-        s3_path + x_train_key,
-        x_train_key
-    )
-    logging.info("Dowloaded training images file successfully")
+    # s3.download_file(
+    #     "training-data-sagemaker-tensorflow-mnist",
+    #     s3_path + x_train_key,
+    #     x_train_key
+    # )
+    # logging.info("Dowloaded training images file successfully")
 
 
-    s3.download_file(
-        "training-data-sagemaker-tensorflow-mnist",
-        s3_path + y_train_key,
-        y_train_key
-    )
-    logging.info("Dowloaded training labels file successfully")
+    # s3.download_file(
+    #     "training-data-sagemaker-tensorflow-mnist",
+    #     s3_path + y_train_key,
+    #     y_train_key
+    # )
+    # logging.info("Dowloaded training labels file successfully")
 
-    s3.download_file(
-        "training-data-sagemaker-tensorflow-mnist",
-        s3_path + x_test_key,
-        x_test_key
-    )
-    logging.info("Dowloaded testing images file successfully")
+    # s3.download_file(
+    #     "training-data-sagemaker-tensorflow-mnist",
+    #     s3_path + x_test_key,
+    #     x_test_key
+    # )
+    # logging.info("Dowloaded testing images file successfully")
 
-    s3.download_file(
-        "training-data-sagemaker-tensorflow-mnist",
-        s3_path + y_test_key,
-        y_test_key
-    )
-    logging.info("Dowloaded testing labels file successfully")
+    # s3.download_file(
+    #     "training-data-sagemaker-tensorflow-mnist",
+    #     s3_path + y_test_key,
+    #     y_test_key
+    # )
+    # logging.info("Dowloaded testing labels file successfully")
 
-    input_path = ''
+    # input_path = ''
 
     training_images_filepath = join(input_path, x_train_key)
     training_labels_filepath = join(input_path, y_train_key)
@@ -92,20 +95,27 @@ def process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key):
     y_test = idx2numpy.convert_from_file(test_labels_filepath)
 
 
-
-    np.savez("mnist.npz", x_test=x_test, x_train=x_train, y_train=y_train, y_test=y_test)
+    train_output_path = os.path.join("/opt/ml/processing/output", "mnist.npz")
+    np.savez(train_output_path, x_test=x_test, x_train=x_train, y_train=y_train, y_test=y_test)
     logging.info("Saved numpy file successfully")
 
 
-    upload_file("mnist.npz", "training-data-sagemaker-tensorflow-mnist","processing_output/mnist.npz")
-    logging.info("uploaded numpy file to s3 successfully")
-
+    # upload_file("mnist.npz", "training-data-sagemaker-tensorflow-mnist","processing_output/mnist.npz")
+    # logging.info("uploaded numpy file to s3 successfully")
+    
 
 
 if __name__ == "__main__":
-    s3_path = "processing_input/"
+
+
+    parser = argparse.ArgumentParser()
+
+    input_data_path = os.path.join("/opt/ml/processing/input")
+    
+
+    # s3_path = "processing_input/"
     x_train_key= "train-images.idx3-ubyte"
     y_train_key= "train-labels.idx1-ubyte"
     x_test_key= "t10k-images.idx3-ubyte"
     y_test_key= "t10k-labels.idx1-ubyte"
-    process_data(s3_path, x_train_key, y_train_key, x_test_key, y_test_key)
+    process_data(input_data_path, x_train_key, y_train_key, x_test_key, y_test_key)
