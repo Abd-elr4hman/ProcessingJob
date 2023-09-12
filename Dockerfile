@@ -2,7 +2,7 @@ FROM python:3.7-slim-buster
 
 # WORKDIR /user/src
 
-COPY ./src ./
+COPY ./src/* ./
 
 RUN pip3 install -r requirements.txt
 
