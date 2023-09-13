@@ -26,7 +26,6 @@ def test_process_data():
         )
     
     dataset = np.load(OUTPUT_DATA_PATH)
-    print(dataset.keys)
      
     assert list(dataset.keys()) == ['x_test', 'x_train', 'y_train', 'y_test']
 
