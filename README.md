@@ -1,6 +1,6 @@
 # ProcessingJob
 This porject illustrates a machine learning training pipeline. The main focus is the MLOPS Practices like Workflow Orchestration, Experiment tracking, Model versioning.
-![image](https://github.com/Abd-elr4hman/ProcessingJob/assets/87248009/f235bbca-cb05-4aab-8be7-f42f7b01aafe)
+![image](https://github.com/Abd-elr4hman/ProcessingJob/assets/87248009/b718266b-6948-4139-8478-b09e6bbb5052)
 
 
 
